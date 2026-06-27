@@ -1,116 +1,118 @@
 export default function DeployResult({ status, txHash, tokenAddress, error, onReset }) {
   if (status === 'idle') return null
 
-  const basescanTx = txHash ? `https://basescan.org/tx/${txHash}` : null
-  const basescanToken = tokenAddress ? `https://basescan.org/token/${tokenAddress}` : null
+  const basescanTx    = txHash        ? `https://basescan.org/tx/${txHash}`         : null
+  const basescanToken = tokenAddress  ? `https://basescan.org/token/${tokenAddress}` : null
 
-  if (status === 'checking') {
-    return (
-      <div className="mt-4 p-4 bg-zinc-50 rounded-xl border border-zinc-100 flex items-center gap-3">
-        <div className="w-5 h-5 border-2 border-zinc-300 border-t-[#0052FF] rounded-full animate-spin flex-shrink-0" />
-        <div>
-          <div className="text-sm font-medium text-zinc-800">Mengecek status aktivasi B20…</div>
-          <div className="text-xs text-zinc-400 mt-0.5">Memverifikasi ke Activation Registry Base</div>
-        </div>
+  const wrap = (children) => (
+    <div style={{ marginTop: 16, borderRadius: 14, overflow: 'hidden', border: '1px solid var(--border)' }}>
+      {children}
+    </div>
+  )
+
+  if (status === 'checking') return wrap(
+    <div style={{ padding: '16px 20px', background: '#111118', display: 'flex', alignItems: 'center', gap: 12 }}>
+      <Spinner color="#6699FF" />
+      <div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: '#F0F0FF' }}>Checking B20 activation…</div>
+        <div style={{ fontSize: 12, color: '#8888AA', marginTop: 2 }}>Verifying with Base Activation Registry</div>
       </div>
-    )
-  }
+    </div>
+  )
 
-  if (status === 'pending') {
-    return (
-      <div className="mt-4 p-4 bg-zinc-50 rounded-xl border border-zinc-100 flex items-center gap-3">
-        <div className="w-5 h-5 border-2 border-zinc-300 border-t-[#0052FF] rounded-full animate-spin flex-shrink-0" />
-        <div>
-          <div className="text-sm font-medium text-zinc-800">Menunggu konfirmasi wallet…</div>
-          <div className="text-xs text-zinc-400 mt-0.5">Cek MetaMask / wallet kamu</div>
-        </div>
+  if (status === 'pending') return wrap(
+    <div style={{ padding: '16px 20px', background: '#111118', display: 'flex', alignItems: 'center', gap: 12 }}>
+      <Spinner color="#6699FF" />
+      <div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: '#F0F0FF' }}>Waiting for wallet confirmation…</div>
+        <div style={{ fontSize: 12, color: '#8888AA', marginTop: 2 }}>Check your wallet to approve the transaction</div>
       </div>
-    )
-  }
+    </div>
+  )
 
-  if (status === 'confirming') {
-    return (
-      <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100 flex items-center gap-3">
-        <div className="w-5 h-5 border-2 border-blue-200 border-t-[#0052FF] rounded-full animate-spin flex-shrink-0" />
-        <div>
-          <div className="text-sm font-medium text-[#0052FF]">Transaksi terkirim, menunggu konfirmasi…</div>
-          {basescanTx && (
-            <a href={basescanTx} target="_blank" rel="noopener noreferrer"
-              className="text-xs text-[#0052FF] underline mt-0.5 block opacity-70 hover:opacity-100">
-              Lihat di Basescan ↗
-            </a>
-          )}
-        </div>
-      </div>
-    )
-  }
-
-  if (status === 'success') {
-    return (
-      <div className="mt-4 p-5 bg-green-50 rounded-xl border border-green-100">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-sm font-bold">✓</div>
-          <div className="font-semibold text-green-800">Token berhasil di-deploy!</div>
-        </div>
-
-        {tokenAddress && (
-          <div className="mb-2">
-            <div className="text-xs text-green-600 font-medium mb-1">Alamat Token</div>
-            <div className="flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-green-100">
-              <code className="text-xs font-mono text-zinc-700 flex-1 truncate">{tokenAddress}</code>
-              <button
-                onClick={() => navigator.clipboard.writeText(tokenAddress)}
-                className="text-xs text-[#0052FF] border-0 bg-transparent cursor-pointer font-medium hover:underline"
-              >
-                Salin
-              </button>
-            </div>
-          </div>
+  if (status === 'confirming') return wrap(
+    <div style={{ padding: '16px 20px', background: 'rgba(0,82,255,0.06)', display: 'flex', alignItems: 'center', gap: 12 }}>
+      <Spinner color="#0052FF" />
+      <div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: '#6699FF' }}>Transaction submitted — awaiting confirmation</div>
+        {basescanTx && (
+          <a href={basescanTx} target="_blank" rel="noopener noreferrer"
+            style={{ fontSize: 12, color: '#0052FF', textDecoration: 'none', marginTop: 3, display: 'block', opacity: 0.8 }}>
+            View on Basescan ↗
+          </a>
         )}
-
-        <div className="flex gap-2 mt-3">
-          {basescanTx && (
-            <a href={basescanTx} target="_blank" rel="noopener noreferrer"
-              className="text-xs px-3 py-1.5 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors no-underline font-medium">
-              Lihat Tx ↗
-            </a>
-          )}
-          {basescanToken && (
-            <a href={basescanToken} target="_blank" rel="noopener noreferrer"
-              className="text-xs px-3 py-1.5 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors no-underline font-medium">
-              Lihat Token ↗
-            </a>
-          )}
-          <button
-            onClick={onReset}
-            className="text-xs px-3 py-1.5 bg-white border border-zinc-200 text-zinc-600 rounded-lg hover:bg-zinc-50 transition-colors cursor-pointer font-medium ml-auto"
-          >
-            Deploy Lagi
-          </button>
-        </div>
       </div>
-    )
-  }
+    </div>
+  )
 
-  if (status === 'error') {
-    return (
-      <div className="mt-4 p-4 bg-red-50 rounded-xl border border-red-100">
-        <div className="flex items-start gap-2">
-          <div className="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-xs font-bold flex-shrink-0 mt-0.5">✕</div>
-          <div className="flex-1">
-            <div className="text-sm font-medium text-red-800 mb-1">Deploy gagal</div>
-            <div className="text-xs text-red-600 leading-relaxed">{error}</div>
-            <button
-              onClick={onReset}
-              className="text-xs px-3 py-1.5 bg-white border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors cursor-pointer font-medium mt-2"
-            >
-              Coba Lagi
+  if (status === 'success') return wrap(
+    <div style={{ background: 'rgba(0,200,150,0.06)', padding: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+        <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(0,200,150,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#00C896', fontWeight: 800, fontSize: 15 }}>✓</div>
+        <div style={{ fontWeight: 700, fontSize: 15, color: '#00C896' }}>Token deployed successfully</div>
+      </div>
+
+      {tokenAddress && (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 11, color: '#00C896', fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Token Address</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#111118', borderRadius: 10, padding: '10px 14px', border: '1px solid #2A2A3D' }}>
+            <code className="mono" style={{ fontSize: 12, color: '#F0F0FF', flex: 1, wordBreak: 'break-all' }}>{tokenAddress}</code>
+            <button onClick={() => navigator.clipboard.writeText(tokenAddress)}
+              style={{ fontSize: 11, color: '#0052FF', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, fontFamily: 'inherit', flexShrink: 0 }}>
+              Copy
             </button>
           </div>
         </div>
+      )}
+
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {basescanTx && (
+          <a href={basescanTx} target="_blank" rel="noopener noreferrer"
+            style={{ fontSize: 12, padding: '7px 14px', background: 'rgba(0,200,150,0.1)', color: '#00C896', borderRadius: 8, textDecoration: 'none', fontWeight: 600 }}>
+            View Transaction ↗
+          </a>
+        )}
+        {basescanToken && (
+          <a href={basescanToken} target="_blank" rel="noopener noreferrer"
+            style={{ fontSize: 12, padding: '7px 14px', background: 'rgba(0,200,150,0.1)', color: '#00C896', borderRadius: 8, textDecoration: 'none', fontWeight: 600 }}>
+            View Token ↗
+          </a>
+        )}
+        <button onClick={onReset}
+          style={{ fontSize: 12, padding: '7px 14px', background: '#111118', color: '#8888AA', borderRadius: 8, border: '1px solid #2A2A3D', cursor: 'pointer', fontFamily: 'inherit', marginLeft: 'auto' }}>
+          Deploy Another
+        </button>
       </div>
-    )
-  }
+    </div>
+  )
+
+  if (status === 'error') return wrap(
+    <div style={{ background: 'rgba(255,68,68,0.06)', padding: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+        <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,68,68,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FF4444', fontWeight: 800, fontSize: 13, flexShrink: 0, marginTop: 1 }}>✕</div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 700, fontSize: 14, color: '#FF6666', marginBottom: 6 }}>Deploy failed</div>
+          <div className="mono" style={{ fontSize: 12, color: '#FF4444', lineHeight: 1.6, opacity: 0.8 }}>{error}</div>
+          <button onClick={onReset}
+            style={{ marginTop: 12, fontSize: 12, padding: '7px 14px', background: '#111118', color: '#8888AA', borderRadius: 8, border: '1px solid #2A2A3D', cursor: 'pointer', fontFamily: 'inherit' }}>
+            Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 
   return null
+}
+
+function Spinner({ color = '#0052FF' }) {
+  return (
+    <div style={{
+      width: 20, height: 20, borderRadius: '50%',
+      border: `2px solid ${color}33`,
+      borderTopColor: color,
+      animation: 'spin 0.7s linear infinite',
+      flexShrink: 0,
+    }} />
+  )
 }
