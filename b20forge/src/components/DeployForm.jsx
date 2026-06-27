@@ -170,7 +170,7 @@ export default function DeployForm() {
             </button>
           )}
 
-          <DeployResult status={status} txHash={txHash} tokenAddress={tokenAddress} error={error} onReset={handleReset} />
+          <DeployResult status={status} txHash={txHash} tokenAddress={tokenAddress} error={error} onReset={handleReset} tokenSymbol={form.symbol} decimals={form.variant === 1 ? 6 : form.decimals} />
         </div>
 
         {/* ── Right: Preview ───────────────────────────────────────── */}
