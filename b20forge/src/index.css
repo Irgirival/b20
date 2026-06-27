@@ -2,31 +2,140 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 :root {
-  --base-blue: #0052FF;
+  --bg:        #0A0A0F;
+  --bg-card:   #111118;
+  --bg-card2:  #16161F;
+  --border:    #2A2A3D;
+  --border-bright: #3A3A55;
+  --base:      #0052FF;
+  --base-dim:  #0040CC;
+  --base-glow: rgba(0, 82, 255, 0.15);
+  --text:      #F0F0FF;
+  --text-muted:#8888AA;
+  --text-dim:  #555570;
+  --success:   #00C896;
+  --warning:   #F5A623;
+  --danger:    #FF4444;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  margin: 0;
-  background: #fafafa;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
-@keyframes pulse-ring {
+.mono { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+
+/* Glow effects */
+.glow-blue { box-shadow: 0 0 30px var(--base-glow); }
+.text-glow { text-shadow: 0 0 20px rgba(0,82,255,0.5); }
+
+/* Pulse animation */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+.pulse { animation: pulse-dot 2s ease-in-out infinite; }
+
+/* Fade in up */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInUp 0.5s ease forwards; }
+.fade-in-1 { animation: fadeInUp 0.5s 0.1s ease both; }
+.fade-in-2 { animation: fadeInUp 0.5s 0.2s ease both; }
+.fade-in-3 { animation: fadeInUp 0.5s 0.35s ease both; }
+
+/* Forge animation */
+@keyframes forge-blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50% { opacity: 0; }
+}
+.cursor-blink { animation: forge-blink 1s step-end infinite; }
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #fff 0%, #8888FF 50%, #0052FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.pulse-dot {
-  animation: pulse-ring 2s ease-in-out infinite;
+/* Input styles */
+.input-dark {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+}
+.input-dark:focus {
+  border-color: var(--base);
+  box-shadow: 0 0 0 3px rgba(0,82,255,0.12);
+}
+.input-dark::placeholder { color: var(--text-dim); }
+.input-dark:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Card */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
+/* Button base */
+.btn-primary {
+  background: var(--base);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  font-family: inherit;
+}
+.btn-primary:hover { background: var(--base-dim); box-shadow: 0 4px 20px var(--base-glow); }
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.btn-ghost:hover { border-color: var(--border-bright); color: var(--text); }
+
+/* RainbowKit overrides */
+[data-rk] button {
+  font-family: 'Inter', sans-serif !important;
 }
