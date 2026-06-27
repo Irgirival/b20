@@ -4,6 +4,18 @@ export default function DeployResult({ status, txHash, tokenAddress, error, onRe
   const basescanTx = txHash ? `https://basescan.org/tx/${txHash}` : null
   const basescanToken = tokenAddress ? `https://basescan.org/token/${tokenAddress}` : null
 
+  if (status === 'checking') {
+    return (
+      <div className="mt-4 p-4 bg-zinc-50 rounded-xl border border-zinc-100 flex items-center gap-3">
+        <div className="w-5 h-5 border-2 border-zinc-300 border-t-[#0052FF] rounded-full animate-spin flex-shrink-0" />
+        <div>
+          <div className="text-sm font-medium text-zinc-800">Mengecek status aktivasi B20…</div>
+          <div className="text-xs text-zinc-400 mt-0.5">Memverifikasi ke Activation Registry Base</div>
+        </div>
+      </div>
+    )
+  }
+
   if (status === 'pending') {
     return (
       <div className="mt-4 p-4 bg-zinc-50 rounded-xl border border-zinc-100 flex items-center gap-3">
