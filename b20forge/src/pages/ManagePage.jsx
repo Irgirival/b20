@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAccount, useWalletClient, usePublicClient } from 'wagmi'
 import { base } from '../lib/wagmi'
-import { B20_TOKEN_ABI, ROLES } from '../lib/b20'
+import { B20_TOKEN_ABI, B20_ROLES } from '../lib/b20'
 import { parseError } from '../hooks/useMintToken'
 
 function useContractWrite() {
@@ -153,7 +153,7 @@ export default function ManagePage() {
               </button>
             </div>
             <button
-              onClick={() => grantRole.write({ address: tokenAddr, functionName: 'grantRole', args: [ROLES[grantRoleKey], grantTarget] })}
+              onClick={() => grantRole.write({ address: tokenAddr, functionName: 'grantRole', args: [B20_ROLES[grantRoleKey], grantTarget] })}
               disabled={grantRole.status === 'pending' || grantRole.status === 'confirming' || !grantTarget}
               className="py-2.5 bg-zinc-900 text-white text-sm font-medium rounded-xl hover:bg-zinc-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
