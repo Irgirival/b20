@@ -1,29 +1,22 @@
-// Lightweight analytics — no third-party, no cookies
-// Sends anonymous events to a simple endpoint or console in dev
-
+// Analytics — Vercel Analytics + localStorage fallback
 const IS_DEV = import.meta.env.DEV
 
 export function track(event, props = {}) {
-  const payload = {
-    event,
-    ...props,
-    ts: Date.now(),
-    url: window.location.pathname,
-  }
+  const payload = { event, ...props, ts: Date.now(), url: window.location.pathname }
 
   if (IS_DEV) {
     console.log('[analytics]', payload)
     return
   }
 
-  // Option 1: Vercel Analytics (add @vercel/analytics to package.json)
-  // import { track as vercelTrack } from '@vercel/analytics'
-  // vercelTrack(event, props)
+  // Vercel Analytics (aktif setelah npm install @vercel/analytics)
+  try {
+    if (typeof window.va === 'function') {
+      window.va('event', { name: event, data: props })
+    }
+  } catch (_) {}
 
-  // Option 2: Simple beacon (ganti dengan endpoint kamu sendiri)
-  // navigator.sendBeacon('/api/analytics', JSON.stringify(payload))
-
-  // Default: simpan ke localStorage sebagai fallback sederhana
+  // localStorage fallback — bisa diread dari console
   try {
     const key = 'b20forge_analytics'
     const existing = JSON.parse(localStorage.getItem(key) || '[]')
@@ -32,7 +25,6 @@ export function track(event, props = {}) {
   } catch (_) {}
 }
 
-// Events yang dipakai di seluruh app
 export const EVENTS = {
   DEPLOY_STARTED:   'deploy_started',
   DEPLOY_SUCCESS:   'deploy_success',
