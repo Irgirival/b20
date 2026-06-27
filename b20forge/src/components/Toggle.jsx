@@ -1,32 +1,25 @@
 export default function Toggle({ checked, onChange, label, description }) {
   return (
-    <label className="flex items-start gap-3 cursor-pointer group">
-      {/* Track */}
-      <div className="relative mt-0.5 flex-shrink-0">
-        <input
-          type="checkbox"
-          className="sr-only"
-          checked={checked}
-          onChange={(e) => onChange(e.target.checked)}
-        />
-        <div
-          className={`w-9 h-5 rounded-full transition-colors duration-200 ${
-            checked ? 'bg-[#0052FF]' : 'bg-zinc-200'
-          }`}
-        />
-        <div
-          className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200 ${
-            checked ? 'translate-x-4' : 'translate-x-0'
-          }`}
-        />
+    <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer' }}>
+      <div style={{ position: 'relative', flexShrink: 0, marginTop: 2 }}>
+        <input type="checkbox" style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
+          checked={checked} onChange={e => onChange(e.target.checked)} />
+        <div style={{
+          width: 38, height: 20, borderRadius: 10,
+          background: checked ? '#0052FF' : '#2A2A3D',
+          transition: 'background 0.2s',
+          border: `1px solid ${checked ? '#0052FF' : '#3A3A55'}`,
+        }} />
+        <div style={{
+          position: 'absolute', top: 2, left: checked ? 19 : 2,
+          width: 16, height: 16, borderRadius: '50%',
+          background: 'white', transition: 'left 0.2s',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+        }} />
       </div>
-
-      {/* Label */}
       <div>
-        <div className="text-sm font-medium text-zinc-800 leading-tight">{label}</div>
-        {description && (
-          <div className="text-xs text-zinc-400 mt-0.5 leading-relaxed">{description}</div>
-        )}
+        <div style={{ fontSize: 14, fontWeight: 500, color: '#F0F0FF', lineHeight: 1.3 }}>{label}</div>
+        {description && <div style={{ fontSize: 12, color: '#8888AA', marginTop: 3, lineHeight: 1.5 }}>{description}</div>}
       </div>
     </label>
   )
