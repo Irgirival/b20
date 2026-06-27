@@ -139,3 +139,12 @@ body {
 [data-rk] button {
   font-family: 'Inter', sans-serif !important;
 }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
