@@ -121,7 +121,33 @@ function DeployFormWithMeta() {
     'B20 Forge — Launch token B20 di Base Mainnet',
     'Deploy token B20 ERC-20 di Base dalam satu klik. Tanpa coding, biaya ~$0.01, langsung live.'
   )
-  return <DeployForm />
+  return (
+    <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="mb-8">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-semibold text-[#0052FF] uppercase tracking-wider mb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#0052FF] animate-pulse inline-block" />
+          Live · Base Beryl Upgrade
+        </div>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 leading-tight mb-2">
+          Deploy token B20<br />
+          <span className="text-[#0052FF]">di Base Mainnet</span>
+        </h1>
+        <p className="text-zinc-500 text-[15px] max-w-lg">
+          Buat dan deploy token ERC-20 dengan fitur compliance profesional.
+          Tanpa coding, biaya ~$0.01, langsung live.
+        </p>
+        <div className="flex flex-wrap gap-3 mt-4">
+          {[['~$0.01','Biaya deploy'],['<30 detik','Waktu deploy'],['ERC-20','Kompatibel'],['0 kode','Tanpa coding']].map(([v,l]) => (
+            <div key={l} className="bg-white border border-zinc-100 rounded-xl px-4 py-2 shadow-sm">
+              <div className="font-semibold text-zinc-900 text-sm">{v}</div>
+              <div className="text-[11px] text-zinc-400 mt-0.5">{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <DeployForm />
+    </div>
+  )
 }
 
 function HistoryPageWithMeta() {
